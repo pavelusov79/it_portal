@@ -1,0 +1,27 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="container my-5">
+        {% if not vacancy_delete.hide %}
+            Уверены, что хотите удалить вакансию <strong>{{ vacancy_delete.vacancy_name }}</strong>?
+        {% else %}
+            Уверены, что хотите восстановить вакансию <strong>{{ vacancy_delete.vacancy_name }}</strong>?
+        {% endif %}
+        <div class="row mt-3 mb-5">
+            <div class="col col-sm-6 d-flex">
+                <form action="{% url 'employer:vacancy_delete' employer.pk vacancy_delete.pk %}"
+                      method="post">
+                    {% csrf_token %}
+                    {% if not vacancy_delete.hide %}
+                    <input class="btn btn-outline-danger mr-5" type="submit" value="удалить">
+                    {% else %}
+                     <input class="btn btn-outline-primary mr-5" type="submit" value="восстановить">
+                    {% endif %}
+                </form>
+                <a class="btn btn-outline-success" role="button" href="{% url 'employer:main_cabinet' employer.pk %}">отмена</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

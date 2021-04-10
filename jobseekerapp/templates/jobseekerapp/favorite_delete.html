@@ -1,0 +1,13 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+   <div class="container">
+       <h3 class="my-3 text-center">Уверены, что хотите удалить вакансию из избранного?</h3>
+       <form action="{% url 'jobseeker:favorite_delete' user.pk object.pk %}" method="post">
+           {% csrf_token %}
+           <input class="btn btn-danger form-control last" type="submit" value="удалить">
+       </form>
+       <a class="btn btn-round form-control last" href="{% url 'jobseeker:favorite_list' user.pk %}">отмена</a>
+   </div>
+{% endblock %}

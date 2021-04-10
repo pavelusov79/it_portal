@@ -1,0 +1,41 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container my-5">
+        {% if sent %}
+        <div class="row justify-content-center">
+            <div class="col col-md-6">
+                {% if not action or action == 'need_moderation' %}
+                <p>Изменения при редактировании вакансии успешно применены. Вакансия была отправлена
+                    на модерацию. После прохождения модерации вакансия будет успешно добавлена на портал и будет отражена в
+                    вашем личном кабинете. Вам поступит сообщение об успешной модерации в
+                    разделе "сообщения" в личном кабинете.</p>
+                {% else %}
+                <p>Изменения при редактировании успешно применены. Вы можете дальше
+                    продолжить редактирование этой вакансии позже. Данную вакансию вы найдете в
+                    разделе "черновики" вашего личного кабинета.</p>
+                {% endif %}
+                <div class="d-flex justify-content-around mt-3 mb-5">
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'employer:main_cabinet' employer.pk %}">
+                        вернуться в личный кабинет</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'main' 1 %}">на
+                        главную</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <h3 class="mb-5 font-italic text-center">Форма редактирования вакансии</h3>
+        <div class="row justify-content-center">
+            <div class="col col-md-6">
+                <form class="form-horizontal vacancy_form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <br>
+                    <input class="form-control" type="submit" value="сохранить изменения">
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

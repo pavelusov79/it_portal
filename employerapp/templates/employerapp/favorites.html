@@ -1,0 +1,53 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="font-italic mb-5 text-center">Личный кабинет: {{ employer.company_name }} </h3>
+    <div class="row justify-content-around">
+        <div class="col-5 col-sm-4 col-md-3 pr-4 mb-5">
+            {% include 'employerapp/include/left-menu.html' %}
+        </div>
+        <div class="col-12 col-sm-8 col-md-9">
+            {% if favorites %}
+            <h5 class="mb-4 font-italic">Избранные резюме:</h5>
+            {% for item in favorites %}
+            <p class="font-italic small font-weight-bold">Добавлено в избранное: {{ item.date|date:'d.m.Y.' }}</p>
+            <div class="d-flex">
+                <h4 style="color: blue;"><a href="{% url 'jobseeker:resume_external_detail' item.resume.pk %}">{{ item.resume.user.last_name }} {{ item.resume.user.first_name }}
+                    {{ item.resume.user.jobseeker.middle_name }}</a></h4>
+                <p class="h5 ml-5" style="color:black;">Уровень з/п:
+                    {% if item.resume.salary_min and item.resume.salary_max %}{{ item.resume.salary_min }} - {{ item.resume.salary_max }} {{ item.resume.currency }}
+                    {% elif item.resume.salary_min %} от {{ item.resume.salary_min }} {{ item.resume.currency }}
+                    {% elif item.resume.salary_max %} до {{ item.resume.salary_max }} {{ item.resume.currency }}
+                    {% else %} не указана
+                    {% endif %}
+                </p>
+            </div>
+            <p class="small text-muted mb-0">{{ item.resume.user.jobseeker.city }}</p>
+            <p class="text-muted mb-3">Дата рождения:
+                {{item.resume.user.jobseeker.birthday|date:"d.m.Y"}}
+            <span class="mb-3 ml-5">Семейный статус:
+                {{item.resume.user.jobseeker.get_married_status_display}}</span></p>
+            <p>Желаемая должность: {{ item.resume.name }}</p>
+            <div class="d-flex">
+                <strong>Навыки:</strong> <span class="ml-3">{{item.resume.key_skills|linebreaks|truncatewords:20}}</span>
+            </div>
+            <p>Дата публикации: {{item.resume.updated_at|date:"d.m.Y" }}</p>
+            <div class="d-flex mb-5">
+                <a class="btn btn-outline-primary" role="button"
+                   href="{% url 'employer:delete_favorite' employer.pk item.pk %}">
+                    Удалить из избранного</a>
+                <a class="btn btn-outline-primary px-4 ml-5" role="button"
+                   href="{% url 'employer:send_offer' user.pk item.resume.pk %}">Направить
+                    предложение
+                </a>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="text-center">У вас еще нет ни одного избранного резюме.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

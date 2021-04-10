@@ -1,0 +1,22 @@
+{% extends 'authapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="text-center font-italic">Подтверждение регистрации</h3>
+    <div class="row justify-content-center">
+        <div class="col-12 mt-3 text-center">
+        {% if user.jobseeker %}
+            {{ user.last_name }} {{ user.first_name }} {{ user.jobseeker.middle_name }} поздравляем
+            вас с успешной регистрацией на портале IT Recrut!
+        {% elif user.employer %}
+            {{ user.employer.company_name }} поздравляем вас с успешной регистрацией на портале IT Recrut!
+        {% else %}
+            Ошибка в регистрации.
+        {% endif %}
+        <div class="mt-3 mb-5 text-center"><a class="my-5 btn btn-outline-primary" role="button"
+            href="{% url 'auth:login' %}">Войти на портал</a></div>
+        </div>
+    </div>
+</div>
+{% endblock %}

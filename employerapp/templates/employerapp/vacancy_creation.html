@@ -1,0 +1,50 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container my-5">
+        {% if sent and action == 'draft' %}
+        <div class="row justify-content-center">
+            <div class="col col-md-8">
+                <p>Ваша вакансия сохранена. Вы можете ее продолжить редактировать в разделе
+                    "Черновики вакансий" вашего личного кабинета</p>
+                <div class="d-flex justify-content-around">
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'employer:main_cabinet' employer.pk %}">вернуться в
+                        личный кабинет</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'main' 1 %}">на
+                        главную</a>
+                </div>
+            </div>
+        </div>
+        {% elif sent and action == 'need_moderation' %}
+        <div class="row justify-content-center">
+            <div class="col col-md-8">
+                <p>Ваша вакансия успешно была отправлена на модерацию. После прохождения
+                    модерации вакансия будет успешно добавлена на портал и будет отражена в
+                    вашем личном кабинете.
+                </p>
+                <p>Вам поступит сообщение о статусе модерации. Вы можете просмотреть данное сообщение в разделе "Сообщения" вашего личного кабинета.</p>
+                <div class="d-flex justify-content-around my-5">
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'employer:vacancy_create' employer.pk %}">создать еще одну
+                        вакансию</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'employer:main' employer.pk %}">
+                        вернуться в личный кабинет</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <h3 class="mb-5 font-italic text-center">Форма создания вакансии</h3>
+        <div class="row justify-content-center">
+            <div class="col col-md-6">
+                <form class="form-horizontal vacancy_form"
+                      method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <br>
+                    <input class="form-control" type="submit" value="подтвердить">
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

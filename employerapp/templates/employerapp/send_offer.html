@@ -1,0 +1,33 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container my-5">
+        {% if sent %}
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <p>Вашe предложение было успешно направлено соискателю. При поступлении отклика от
+                    соискателя вы будете проинформированы в вашем личном кабинете.
+                </p>
+                <div class="d-flex justify-content-around my-5">
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'main' 1 %}">вернуться к поиску резюме</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'employer:main_cabinet' employer.pk %}">
+                        вернуться в личный кабинет</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <h3 class="mb-5 font-italic text-center">Форма отправки предложения соискателю</h3>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6">
+                <form class="form-horizontal"
+                      method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="form-control" type="submit" value="направить предложение">
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

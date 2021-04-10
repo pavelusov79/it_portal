@@ -1,0 +1,50 @@
+[
+	{
+		"username": "company1",
+		"email": "company1@test.local",
+		"password": "geekbrains",
+		"data": {
+			"company_name": "СуперКомпания",
+			"tax_number": "2131231231231",
+			"phone_number": "89244255223",
+			"site": "test.ru",
+			"industry_type_id": 1,
+			"short_description": "Суперкомпания занимается различными делами в сфере IT",
+			"logo": "company_logo/company_logo_1.png",
+			"city": "Москва",
+			"status": "moderation_ok"
+		}
+	},
+	{
+		"username": "company2",
+		"email": "company_test@test.com",
+		"password": "geekbrains",
+		"data": {
+			"company_name": "Компания №2",
+			"tax_number": "213123121312",
+			"phone_number": "9269233398",
+			"site": "company2.ru",
+			"industry_type_id": 2,
+			"short_description": "Компания № 2 предоставляет услуги в банковской сфере: интернет-банкинг, карточный процессинг",
+			"logo": "company_logo/company_logo_2.png",
+			"city": "Уфа",
+			"status": "moderation_ok"
+		}
+ 	},
+	{
+		"username": "company3",
+		"email": "company3@geekbrains.local",
+		"password": "geekbrains",
+		"data": {
+			"company_name": "Рекламное агентство",
+			"tax_number": "1231231231231",
+			"phone_number": "9238727233",
+			"site": "reklama.ru",
+			"industry_type_id": 3,
+			"short_description": "Рекламное агентство занимается рекламой.",
+			"logo": "company_logo/company_logo_3.png",
+			"city": "Хабаровск",
+			"status": "moderation_ok"
+		}
+	}
+]

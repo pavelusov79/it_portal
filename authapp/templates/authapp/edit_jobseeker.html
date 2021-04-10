@@ -1,0 +1,32 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+{% if sent %}
+<div class="container mt-5">
+    <h4 class="text-center mb-3 font-italic">Редактирование данных успешно сохранено!</h4>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 mb-5 d-flex justify-content-around">
+            <a class="btn btn-outline-primary" role="button" href="{% url 'jobseeker:cabinet' %}" >
+               в личный кабинет</a>
+            <a class="btn btn-outline-primary" role="button" href="{% url 'main' 1 %}" >на главную</a>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container mt-5">
+    <h4 class="text-center mb-1 font-italic">Редактирование данных пользователя: "{{ user.first_name }} {{ user.last_name }}"</h4>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 mb-5">
+            <form class="form-horizontal w-100" action="{% url 'auth:edit_jobseeker' user.id %}" method="post"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {{ form.as_p }}
+                <input class="form-control" type="submit" value="сохранить">
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

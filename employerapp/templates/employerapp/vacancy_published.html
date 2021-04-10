@@ -1,0 +1,29 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="font-italic mb-5 text-center">Личный кабинет: {{ employer.company_name }} </h3>
+    <div class="row justify-content-around">
+        <div class="col-5 col-sm-4 col-md-3 pr-4 mb-5">
+            {% include 'employerapp/include/left-menu.html' %}
+        </div>
+        <div class="col-12 col-sm-8 col-md-9">
+            {% if vacancies %}
+            <h5 class="mb-4 font-italic">Опубликованные вакансии на портале:</h5>
+            {% for item in vacancies %}
+            {% include 'employerapp/include/vacancy_description.html' %}
+            <div class="d-flex mb-5">
+                <a class="btn btn-outline-primary mr-5" role="button" href="{% url 'employer:vacancy_edit' employer.pk item.pk %}">
+                    Редактировать</a>
+                <a class="btn btn-outline-primary" role="button" href="{% url 'employer:vacancy_delete' employer.pk item.pk %}">
+                    Удалить</a>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="text-center">У вас еще нет ни одной опубликованной вакансии.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

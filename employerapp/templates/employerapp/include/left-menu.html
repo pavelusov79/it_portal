@@ -1,0 +1,21 @@
+{% load static %}
+
+<a class="btn btn-outline-primary w-100 mb-2 px-3 left-menu {% if request.resolver_match.url_name == 'vacancy_create' %}
+left-menu-select{% endif %}" role="button" href="{% url 'employer:vacancy_create' employer.pk %}">Создать вакансию</a>
+<a class="btn btn-outline-primary w-100 mb-2 px-3 left-menu {% if request.resolver_match.url_name == 'published' %}left-menu-select{% endif %}"
+   role="button" href="{% url 'employer:published' employer.pk %}">Опубликованные вакансии <span class="badge badge-light">{% if vacancies %}{{vacancies|length}}{% endif %}</span></a>
+<a class="btn btn-outline-primary w-100 mb-2 px-3 left-menu {% if request.resolver_match.url_name == 'messages' %}left-menu-select{% endif %}" role="button" href="{% url 'employer:messages' employer.pk %}">Сообщения
+<span class="badge badge-light">{% if vacancies_all %}{{vacancies_all|length}}{% endif %}</span></a>
+<a class="btn btn-outline-primary w-100 mb-2 px-3 left-menu {% if request.resolver_match.url_name == 'drafts' %}left-menu-select{% endif %}" role="button" href="{% url 'employer:drafts' employer.pk %}">Черновики
+    <span class="badge badge-light">{% if drafts %}{{drafts|length}}{% endif %}</span></a>
+<a class="btn btn-outline-primary w-100 mb-2 px-3 left-menu {% if request.resolver_match.url_name == 'hide' %}left-menu-select{% endif %}" role="button" href="{% url 'employer:hide' employer.pk %}">
+    Удаленные/Скрытые вакансии <span class="badge badge-light">{% if vacancies_hide %}{{vacancies_hide|length}}{% endif %}</span></a>
+<a class="btn btn-outline-primary w-100 mb-2 px-3 left-menu {% if request.resolver_match.url_name == 'favorites' %}left-menu-select{% endif %}"
+   role="button" href="{% url 'employer:favorites' employer.pk %}">Избранные резюме <span class="badge badge-light">{% if favorites %}{{favorites|length}}{% endif %}</span></a>
+<a class="btn btn-outline-primary w-100 mb-2 px-3 left-menu {% if request.resolver_match.url_name == 'responses' %}left-menu-select{% endif %}"
+   role="button" href="{% url 'employer:responses' employer.pk %}">Отклики на мои вакансии <span
+        class="badge badge-light">{% if responses %}{{responses|length}}{% endif %}</span></a>
+<a class="btn btn-outline-primary w-100 mb-2 px-3 left-menu {% if request.resolver_match.url_name == 'my_offers' %}left-menu-select{% endif %}"
+   role="button" href="{% url 'employer:my_offers' employer.pk %}">Направленные предложения <span
+        class="badge badge-light">{% if offers %}{{offers|length}}{% endif %}</span></a>
+

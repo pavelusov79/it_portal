@@ -1,0 +1,31 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-5 font-italic">Вход</h1>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6">
+            <form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
+                {% csrf_token %}
+                 <label for="{{ form.username.id_for_label }}">Имя пользователя:</label>
+                {{ login_form.username }}
+                <label for="{{ form.password.id_for_label }}">Пароль:</label>
+                {{ login_form.password }}
+                <br>
+                <input class="form-control" type="submit" value="войти на портал">
+            </form>
+            <br/>
+            <br/>
+            <a class="btn btn-outline-primary w-100 mb-3" role="button" href="{% url 'auth:register_employer' %}">
+                Зарегистрироваться как работодатель
+            </a>
+            <a class="btn btn-outline-primary w-100 mb-3" role="button" href="{% url 'auth:register_jobseeker' %}">
+                Зарегистрироваться как соискатель
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <p>Для дальнейшей регистрации просим вас перейти в свой почтовый ящик для
+                подтвержения регистрации.</p>
+            <p>Воспользуйтесь одним из почтовых сервисов:</p>
+            <div class=" my-5 col-12">
+                <a class="ml-3 btn btn-outline-primary" role="button" href="https://mail.ru"
+                   style="width: 6rem;">mail</a>
+                <a class="ml-3 btn btn-outline-primary" role="button" href="https://gmail.com"
+                   style="width: 6rem;">gmail</a>
+                <a class="ml-3 btn btn-outline-primary" role="button"
+                   href="https://mail.yandex.ru/" style="width: 6rem;">yandex</a>
+                <a class="ml-3 btn btn-outline-primary" role="button"
+                   href="https://mail.rambler.ru" style="width: 6rem;">rambler</a>
+                <a class="ml-3 btn btn-outline-primary" role="button"
+                   href="https://login.yahoo.com/?.src=ym&.lang=ru-RU&.intl=ru&.done=https%3A%2F%2Fmail.yahoo.com%2Fd%3F.lang%3Dru-RU"
+                   style="width: 6rem;">yahoo</a>
+            </div>
+            <p class="mb-5">или войдите с помощью почтового приложения.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

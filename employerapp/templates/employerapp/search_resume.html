@@ -1,0 +1,87 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="font-italic text-center mb-5">Результаты поиска</h3>
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-11">
+            {% if object_list %}
+            <p class="mb-3"><a class="h5" href="{% url 'main' 1 %}">&laquo вернуться к поиску</a></p>
+            {% for object in object_list %}
+            <div class="mb-5">
+                <div class="d-flex align-items-center">
+                    <h4 style="color: blue;"><a
+                            href="{% url 'jobseeker:resume_external_detail' object.id %}">{{ object.user.last_name }} {{ object.user.first_name }}
+                        {{ object.user.jobseeker.middle_name }}</a></h4>
+                    <p class="ml-5">
+                        <form action="{% url 'main' 1 %}" method="post" class="favorite">{% csrf_token %}
+                            <input type="hidden" name="checked" value="{{ object.pk }}">
+                            <button class="btn btn-clear add-favorite" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                            </svg></button>
+                        </form>
+                    </p>
+                    <p class="h5 ml-5" style="color:black;">Уровень з/п:
+                        {% if object.salary_min and object.salary_max %}{{ object.salary_min }} -
+                        {{ object.salary_max }} {{ object.currency }}
+                        {% elif object.salary_min %} от {{ object.salary_min }} {{ object.currency }}
+                        {% elif object.salary_max %} до {{ object.salary_max }} {{ object.currency }}
+                        {% else %} не указана
+                        {% endif %}
+                    </p>
+                </div>
+                <p class="small text-muted mb-0">{{ object.user.jobseeker.city }}</p>
+                <div class="d-flex pl-0 col-12 col-sm-7 justify-content-between mb-0">
+                    <p class="text-muted mb-0">Дата рождения:
+                    {{object.user.jobseeker.birthday|date:"d.m.Y"}}</p>
+                    <p class="text-muted mb-0">Семейный статус:
+                    {{object.user.jobseeker.get_married_status_display}}</p>
+                </div>
+                <div class="d-flex pl-0 col-12 col-sm-7 justify-content-between">
+                    <p class="text-muted">тел: {{ object.user.jobseeker.phone_number }}</p>
+                    <p class="text-muted">email: {{ object.user.email }}</p>
+                </div>
+                <p><span class="font-weight-bold">Желаемая должность:</span> {{ object.name }}</p>
+                <div class="d-flex">
+                    <strong>Навыки:</strong> <span class="ml-3">{{ object.key_skills|linebreaks|truncatewords:20}}</span>
+                </div>
+                <p>Дата публикации: {{object.updated_at|date:"d.m.Y" }}</p>
+                <div class="d-flex">
+                    <a class="btn btn-outline-primary" role="button"
+                       href="{% url 'jobseeker:resume_external_detail' object.pk %}">Просмотреть
+                        резюме</a>
+                    <a class="btn btn-outline-primary ml-5" role="button"
+                       href="{% url 'employer:send_offer' user.pk object.pk %}">Направить
+                        предложение</a>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="text-center mt-4 mb-5">
+            {% if object_list.has_previous %}
+                <span>
+                    <a class="h4"
+                       href="?search=&city=&salary=&from=&till={{ search }}&page={{ object_list.previous_page_number }}">&laquo
+                    </a>
+                </span>
+            {% endif %}
+                <span class="px-3 font-italic font-weight-bold">страница {{ object_list.number }}
+                    из {{ object_list.paginator.num_pages }}</span>
+            {% if object_list.has_next %}
+                <span>
+                    <a class="h4" href="?search=&city=&salary=&from=&till={{ search }}&page={{ object_list.next_page_number }}">
+                        &raquo</a>
+                </span>
+            {%endif%}
+            </div>
+            {% else %}
+            <p>Поиск не дал результатов. Попробуйте изменить поиск.</p>
+            <a href="{% url 'main' 1 %}">вернуться к поиску</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

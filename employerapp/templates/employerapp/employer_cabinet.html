@@ -1,0 +1,63 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container my-5">
+    <h3 class="font-italic mb-5 text-center">Личный кабинет: {{ employer.company_name }} </h3>
+    <div class="row">
+        {% if employer.status == 'moderation_ok' %}
+        <div class="col-5 col-sm-4 col-md-3 pr-sm-4">
+            {% include 'employerapp/include/left-menu.html' %}
+        </div>
+        <div class="col-7 col-sm-8 col-md-9 pl-sm-5">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Поле</th>
+                    <th scope="col">Данные</th>
+                </tr>
+                <tr>
+                    <th scope="col">Деятельность</th>
+                    <th scope="col">{{ industry_type }}</th>
+                </tr>
+                <tr>
+                    <th scope="col">Телeфон</th>
+                    <th scope="col">{{ employer.phone_number }}</th>
+                </tr>
+                <tr>
+                    <th scope="col">Город</th>
+                    <th scope="col">{{ employer.city }}</th>
+                </tr>
+                <tr>
+                    <th scope="col">Сайт</th>
+                    <th scope="col">{{ employer.site }}</th>
+                </tr>
+                <tr>
+                    <th scope="col">Статус</th>
+                    <th scope="col">{{ employer.get_status_display }}</th>
+                </tr>
+                </thead>
+            </table>
+            <div class="d-flex">
+                <a class="my-4 px-3 btn btn-outline-primary" role="button" href="{% url 'auth:edit' %}">редактировать
+                    профиль</a>
+                <a class="btn btn-outline-success my-4 ml-4 px-3" role="button"
+                   href="{% url 'auth:employer_change_password' %}">сменить пароль</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p class="text-center">Ваш профиль отправлен на постмодерацию модератору портала. После
+                прохождения модерации вам будет доступна вся функциональность портала,  включая размещение
+                вакансий на портале, добавление резюме в избранное, направление предложений
+                соискателям. При одобрении модератором портала данных вашего профиля вам на вашу
+                почту придет уведомление об успешной модерации. В случае отказа в прохождении
+                модерации вам также будет направлено письмо с причинмами отказа. В случае отказа
+                вы можете снова отредактировать свой профиль с учетом замечаний.
+            </p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

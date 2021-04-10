@@ -1,0 +1,33 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="font-italic mb-5 text-center">Личный кабинет: {{ employer.company_name }} </h3>
+    <div class="row justify-content-around">
+        <div class="col-5 col-sm-4 col-md-3 mb-5">
+            {% include 'employerapp/include/left-menu.html' %}
+        </div>
+        <div class="col-12 col-sm-8 col-md-9">
+            <h5 class="font-italic mb-3">Отклики по вакансиям:</h5>
+            {% if responses %}
+            {% for item in responses %}
+            <span class="font-weight-bold mb-0">{{ item.date|date:"d.m.Y" }}</span> Тема:
+                отклик по вакансии <a href="{% url 'employer:vacancy_view' employer.pk item.vacancy.pk %}"> {{ item.vacancy.vacancy_name }}</a></span>
+            <p class="mb-0">статус: <span class="{% if item.status == 'new' %}font-weight-bold{% endif %}">{{ item.get_status_display }}</span></p>
+            <p class="mb-0">Текст отклика:</p>
+            {% if item.cover_letter %}<p class="mb-5">{{ item.cover_letter }}<br>
+            Прошу рассмотреть <a href="{% url 'jobseeker:resume_external_detail' item.resume.pk %}">мое
+                резюме (желаемая должность: {{ item.resume.name }}).</a></p>{% else %}
+            <p class="mb-5">Меня очень заинтересовала ваша вакансия. Прошу рассмотреть <a
+                href="{% url 'jobseeker:resume_external_detail' item.resume.pk %}">мое
+                резюме (желаемая должность: {{ item.resume.name }}).</a></p>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <p>У вас нет ни одного отклика на вакансию</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

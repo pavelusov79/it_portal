@@ -1,0 +1,49 @@
+[
+  {
+    "username": "testuser",
+    "email": "testuser@gmail.local",
+    "password": "geekbrains",
+    "first_name": "Иван",
+    "last_name": "Иванов",
+    "data": {
+      "middle_name": "Иванович",
+      "gender": "m",
+      "birthday": "1980-4-14",
+      "city": "Москва",
+      "married_status": "h",
+      "phone_number": "89269231152",
+      "about": "Работаю в качестве 1С программиста уже 10 лет.\r\nНравится заниматься саморазвитием, аналитический склад ума."
+    },
+    "resumes": [
+        {
+            "main_info": {
+                "name": "QA",
+                "salary_min": 100000,
+                "salary_max": 150000,
+                "currency": "RUB",
+                "key_skills": "Python, Selenium, автотесты.",
+                "about": "целеустремленный, стрессоустойчивый,\n\r люблю заниматься самообразованием"
+            },
+            "education": [
+              {
+                "edu_type": "high",
+                "degree": "master",
+                "institution_name": "Институт",
+                "from_date": "1995-5-1",
+                "to_date": "1999-5-1",
+                "course_name": "Тестовый курс"
+              }
+            ],
+            "experience": [
+              {
+                "company_name": "ООО ИТ-компания",
+                "job_title": "QA инженер",
+                "from_date": "1994-3-14",
+                "to_date": "1996-5-14",
+                "description": "Занимался тестированием новых доработок,\n\rЗанимался регрессионным тестированием,\n\rПисал автотесты"
+              }
+            ]
+        }
+    ]
+  }
+]

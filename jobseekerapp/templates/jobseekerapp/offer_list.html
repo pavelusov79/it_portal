@@ -1,0 +1,47 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col">
+            <p class="h4 font-weight-bold mt-4">Мои отклики</p>
+            {% if object_list %}
+                {% for object in object_list %}
+                {% if object.direction == 'I' %}
+                <hr>
+                <p class="text-muted mb-3">{{ object.get_direction_display }} </p>
+                <p class="h6 mb-1"><b><a href="{% url 'employer:vacancy_view' object.vacancy.employer.pk object.vacancy.pk %}">{{ object.vacancy.employer.company_name }} ({{ object.vacancy.vacancy_name }})</a></b></p>
+                <p class="h6 mb-1">{{ object.date|date:'d.m.Y' }} </p>
+                <p class="h6 mb-1">резюме: <a href="{% url 'jobseeker:resume_detail' object.resume.user.id object.id %}"> {{ object.resume.name }} </a></p>
+                <p class="text-muted mb-0">{{ object.vacancy.get_status_display }} </p>
+                {% if object.cover_letter %}<p class="mb-0">{{ object.cover_letter|linebreaks|truncatewords:40 }} Контактное лицо: {{ object.vacancy.contact_person }}</p>
+                {% else %}
+                <p class="mb-0">Нас заинтерсовало ваше резюме. Направляем вам предложение по нашей вакансии. В случае ответной
+                заинтересованности просим с нами связаться. Контактное лицо: {{ object.vacancy.contact_person }}.</p>{% endif %}
+                {% if object.contact_phone %}
+                <p class="mb-0">Контактный телефон: {{ object.contact_phone|phone_number }}</p>
+                {% endif %}
+                <a href="{% url 'employer:vacancy_view' object.vacancy.employer.pk object.vacancy.pk %}">Просмотреть предложенную вакансию.</a>
+            {% else %}
+                <hr>
+                <p class="text-muted mb-3">{{ object.get_direction_display }} </p>
+                <p class="h6 mb-1"><b><a href="{% url 'employer:vacancy_view' object.vacancy.employer.pk object.vacancy.pk %}">{{ object.vacancy.employer.company_name }} ({{ object.vacancy.vacancy_name }})</a></b></p>
+                <p class="h6 mb-1">{{ object.date|date:'d.m.Y' }} </p>
+                <p class="h6 mb-1">резюме: <a href="{% url 'jobseeker:resume_detail' object.resume.user.id object.id %}"> {{ object.resume.name }} </a></p>
+                <p class="text-muted mb-3">{{ object.get_status_display }} </p>
+                {% if object.contact_phone %}
+                <p class="mb-0">Контактный телефон:
+                    {{ object.contact_phone|phone_number }}</p>
+                {% endif %}
+                <p class="mb-1">{{ object.cover_letter|linebreaks|truncatewords:40 }}</p>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <hr>
+             <p class="pt-0">Откликов ещё нет</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

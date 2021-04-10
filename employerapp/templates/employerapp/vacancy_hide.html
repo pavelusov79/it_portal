@@ -1,0 +1,25 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="font-italic mb-5 text-center">Личный кабинет: {{ employer.company_name }} </h3>
+    <div class="row justify-content-around">
+        <div class="col-5 col-sm-4 col-md-3 pr-4 mb-5">
+            {% include 'employerapp/include/left-menu.html' %}
+        </div>
+        <div class="col-12 col-sm-8 col-md-9">
+            <h5 class="font-italic mb-3">Удаленные / скрытые вакансии:</h5>
+            {% if vacancies_hide %}
+            {% for item in vacancies_hide %}
+            {% include 'employerapp/include/vacancy_description.html' %}
+            <a class="btn btn-outline-primary mb-5" role="button" href="{% url 'employer:vacancy_delete' employer.pk item.pk %}">
+                Восстановить</a>
+            {% endfor %}
+            {% else %}
+            <p>У вас нет ни одной скрытой/удаленной вакансии.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

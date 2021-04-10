@@ -1,0 +1,213 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+{% if user.is_authenticated and user.employer %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col">
+            <p class="h4 font-italic">Добро пожаловать {{user.employer.company_name}} на портал IT
+                Portal!</p>
+            <p class="mb-5">Статус: Работодатель</p>
+            <form action="{% url 'employerapp:search_resume' user.employer.pk %}"
+                  class="mb-5 search-form" method="get">
+                <div class="form-group">
+                    <label class="pl-0 col-2" for="search-field">Ключевые слова</label>
+                    <input id="search-field" type="text" class="d-inline form-control col-8 col-sm-6 col-md-4"
+                           name="search" placeholder="должность или навык...">
+                    <span title="расширенный поиск"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                         height="16" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+                    </svg></span>
+                    <div class="extend my-3">
+                        <label class="pl-0 col-2" for="city">Город</label>
+                        <input class="mb-3 col-8 col-sm-6 col-md-4 form-control d-inline"
+                               type="text" name="city" id="city"><br>
+                        <!--<label class="pl-0 col-2" for="sex">Выберите пол</label>
+                        <select name="sex" id="sex"
+                                class="mb-3 col-8 col-sm-6 col-md-4 form-control d-inline">
+                            <option value="none"></option>
+                            <option value="m">мужской</option>
+                            <option value="f">женский</option>
+                        </select><br>-->
+                        <div class="d-flex pl-0 col-10 col-sm-8 col-md-6">
+                            <label class="mb-3 col-4 pl-0" for="salary">Уровень дохода от</label>
+                            <input type="number" name="salary" id="salary"
+                                   class="mb-3 ml-2 form-control d-inline col-5">
+                            <select name="currency" id="" class="ml-3 col-3 form-control d-inline">
+                                <option value="RUB">руб.</option>
+                                <option value="EUR">EUR</option>
+                                <option value="USD">USD</option>
+                            </select>
+                        </div>
+                        <div class="d-flex pl-0 col-10 col-sm-8 col-md-6">
+                            <span class="col-4 px-0 col-form-label">объявления за период от
+                            </span><input
+                                class="ml-2 form-control d-inline px-1 col-5" type="date"
+                                name="from_date" id="from_date">
+                            <span class="px-3 col-form-label">до</span><input
+                                class="form-control d-inline px-1 col-5" type="date" name="till_date" id="till_date">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary px-4 button-search" type="submit">поиск
+                    </button>
+                </div>
+            </form>
+            {% for resume in resume_all %}
+            <div class="mb-5">
+                <div class="d-flex align-items-center">
+                    <h4 style="color: blue;"><a href="{% url 'jobseeker:resume_external_detail' resume.id %}">{{ resume.user.last_name }} {{ resume.user.first_name }}
+                        {{ resume.user.jobseeker.middle_name }}</a></h4>
+                    <!--<p class="ml-5">
+                        <form action="{% url 'main' 1 %}" method="post" class="favorite">{%
+                        csrf_token %}-->
+                    <p class="ml-5">
+                    {% if not resume.is_favorite %}
+                    <form action="{% url 'employer:create_favorite' user.employer.pk %}"
+                              method="post" class="add-favorite">{% csrf_token %}
+                        <input type="hidden" name="checked" value="{{ resume.pk }}">
+                        <button class="btn btn-clear add-favorite" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" style="fill:blue;">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                        </svg></button>
+                    </form>
+                    {% else %}
+                    {% get_favorite_id_ resume user.id as favorite_id %}
+                    <form action="{% url 'employer:delete_favorite' user.employer.pk favorite_id %}"
+                              method="post" class="delete-favorite">{% csrf_token %}
+                        <input type="hidden" name="checked" value="{{ resume.pk }}">
+                        <button class="btn btn-clear delete-favorite" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" style="fill:blue;">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg></button>
+                    </form>
+                    {% endif %}
+                    </p>
+                    <p class="h5 ml-5" style="color:black;">Уровень з/п:
+                        {% if resume.salary_min and resume.salary_max %}{{ resume.salary_min }} -
+                        {{ resume.salary_max }} {{ resume.currency }}
+                        {% elif resume.salary_min %} от {{ resume.salary_min }} {{ resume.currency }}
+                        {% elif resume.salary_max %} до {{ resume.salary_max }} {{ resume.currency }}
+                        {% else %} не указана
+                        {% endif %}
+                    </p>
+                </div>
+                <p class="small text-muted mb-0">{{ resume.user.jobseeker.city }}</p>
+                <div class="d-flex pl-0 col-12 col-sm-7 justify-content-between mb-0">
+                    <p class="text-muted mb-0">Дата рождения:
+                    {{resume.user.jobseeker.birthday|date:"d.m.Y"}}</p>
+                    <p class="text-muted mb-0">Семейный статус:
+                    {{resume.user.jobseeker.get_married_status_display}}</p>
+                </div>
+                <div class="d-flex pl-0 col-12 col-sm-7 justify-content-between">
+                    <p class="text-muted">тел: {{ resume.user.jobseeker.phone_number }}</p>
+                    <p class="text-muted">email: {{ resume.user.email }}</p>
+                </div>
+                <p><span class="font-weight-bold">Желаемая должность:</span> {{ resume.name }}</p>
+                <div class="d-flex">
+                    <strong>Навыки:</strong> <span class="ml-3">{{resume.key_skills|linebreaks|truncatewords:20}}</span>
+                </div>
+                <div class="d-flex">
+                    <p>Дата публикации: {{resume.updated_at|date:"d.m.Y" }}</p>
+                    <a class="btn btn-outline-primary px-4 ml-5" role="button"
+                       href="{% url 'employer:send_offer' user.pk resume.pk %}">Направить
+                        предложение
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% elif user.is_authenticated and user.jobseeker %}
+    {% include 'jobseekerapp/main.html' %}
+{% else %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-8 col-md-9 about_h1">
+            <h1 class="text-center font-italic mb-5">Новости IT Portal</h1>
+            <form action="{% url 'search_news' %}" class="mb-5 search-form" method="get">
+                <div class="form-group">
+                    <input type="text" class="d-inline form-control col-8 col-sm-6 col-md-4"
+                           name="search" placeholder="поиск новостей...">
+                    <button id="search_news" class="btn btn-primary px-4" type="submit">поиск
+                    </button>
+                </div>
+            </form>
+            {% for item in news %}
+            <div class="row mb-3 mt-5" id="{{ item.id }}">
+                <div class="col-2 h5">{{ item.published|date:"d.m.y" }}</div>
+                <div class="col-10 h5">{{ item.title|capfirst }}</div>
+            </div>
+            <div class="row mb-1">
+                <div class="col mb-0 text_news">
+                    {% if item.description|wordcount > 40 %}
+                    {{ item.description|linebreaks|truncatewords:40 }}
+                    {% else %} {{ item.description|linebreaks }}
+                    {% endif %}
+                    <p class="mb-2"><a href="{% url 'news_detail' item.pk%}"><small class="text-muted">
+                        подробнее...</small></a></p>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="text-center mb-2">
+                {% if news.has_previous %}
+                <span>
+                    <a class="h4" href="{% url 'main' news.previous_page_number %}">&laquo</a>
+                </span>
+                {% endif %}
+                <span class="px-3 font-italic font-weight-bold">страница {{ news.number }} из {{news.paginator.num_pages}}</span>
+                {% if news.has_next %}
+                <span>
+                    <a class="h4" href="{% url 'main' news.next_page_number %}">&raquo</a>
+                </span>
+                {%endif%}
+            </div>
+        </div>
+        <div class="col-8 col-sm-4 col-md-3 news_col">
+            <h5 class="text-center mt-2 font-italic" style="color: #808000;">Вход для
+                зарегистрированных пользователей</h5>
+            <form class="w-100" action="{% url 'auth:login' %}" method="post">
+                {% csrf_token %}
+                <p class="mb-0 mt-2">Логин:</p>
+                <input class="w-100" type="text" name="username">
+                <p class="mb-0 mt-2">Пароль:</p>
+                <input class="w-100" type="password" name="password">
+                <br>
+                <input class="btn btn-primary form-control mt-3 mb-3" type="submit"
+                       value="войти на портал">
+            </form>
+            <p class="text-center text-muted mt-3 mb-2">регистрация:</p>
+            <a class="btn btn-outline-primary w-100 mb-3" role="button" href="{% url 'auth:register_employer' %}">
+                работодателя
+            </a>
+            <a class="btn btn-outline-primary w-100 mb-3" role="button" href="{% url 'auth:register_jobseeker' %}">
+                соискателя
+            </a>
+
+        </div>
+    </div>
+    {% if employers %}
+    <h3 class="text-center mt-5">Компании партнеры</h3>
+    <div class="row justify-content-center mt-3">
+        {% for item in employers %}
+        <div class="col-6 col-sm-3 col-lg-2">
+            <div class="card">
+                {% if item.logo %}
+                <img class="card-img-top" style="height:100px; width:cover;" src="/media/{{ item.logo }}" alt="Card image cap">
+                {% else %}<p class="card-img-top pt-5 text-center font-weight-bold"
+                             style="height:85px;">LOGO COMPANY</p>
+                {% endif %}
+                <div class="card-body">
+                    <p class="card-text text-center font-italic" style="height: 3rem;">{{ item.company_name }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="font-italic mb-5 text-center">Личный кабинет: {{ employer.company_name }} </h3>
+    <div class="row justify-content-around">
+        <div class="col-5 col-sm-4 col-md-3 mb-5">
+            {% include 'employerapp/include/left-menu.html' %}
+        </div>
+        <div class="col-12 col-sm-8 col-md-9">
+            <h5 class="font-italic mb-3">Направленные предложения соискателям:</h5>
+            {% if offers %}
+                {% for item in offers %}
+            <p class="mb-0"><span class="font-weight-bold mb-0">{{ item.date|date:"d.m.Y" }}</span>
+                Направленное
+                    предложение соискателю: {{ item.resume.user.last_name }} {{ item.resume.user.first_name }}
+                    {{ item.resume.user.jobseeker.middle_name }} на его резюме:
+                    <a href="{% url 'jobseeker:resume_external_detail' item.resume.pk %}">{{ item.resume.name }}</a>
+                </p>
+                <p class="mb-0">Статус: {{ item.get_status_display }}</p>
+                {% if item.cover_letter %}
+                <p>{{ item.cover_letter}}</p>
+                {% else %}
+                <p>Нас заинтересовало ваше резюме. Мы хотели бы пригласить вас на интервью по
+                    вакансии "{{ item.vacancy.vacancy_name }}". В случае заинтересованности просим вас
+                    связаться с нами. Контактное лицо по вакансии: {{ item.vacancy.contact_person }}</p>
+                {% endif %}
+                {% if item.contact_phone %}
+                <p class="mb-5">Мы хотели бы пригласить вас на интервью по вакансии "{{ item.vacancy.vacancy_name }}".
+                    Просим вас связаться с нами по тел. {{ item.contact_phone }}. Контатктное
+                    лицо: {{ item.vacancy.contact_person }}.</p>
+                {% endif %}
+                {% endfor %}
+            {% else %}
+            <p>У вас нет ни одного направленного предложения</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

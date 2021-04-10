@@ -1,0 +1,42 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col">
+            <p class="h4 font-weight-bold mt-4">Мои избранные вакансии</p>
+            {% if object_list %}
+                {% for object in object_list %}
+                <div class="mb-5">
+                    <hr>
+                    <div class="d-flex">
+                        <h4 style="color: blue;"><a href="{% url 'employer:vacancy_view' object.vacancy.employer.pk object.vacancy.pk %}">{{ object.vacancy.vacancy_name }}</a></h4>
+                        <p class="h5 ml-5 align-self-center" style="color:black;">Уровень з/п:
+                            {% if object.vacancy.min_salary and object.vacancy.max_salary %}{{ object.vacancy.min_salary }} -
+                            {{ object.vacancy.max_salary }} {{ object.vacancy.currency }}
+                            {% elif object.vacancy.min_salary %} от {{ object.vacancy.min_salary }} {{ object.vacancy.currency }}
+                            {% elif object.vacancy.max_salary %} до {{ object.vacancy.max_salary }} {{ object.vacancy.currency }}
+                            {% else %} не указана
+                            {% endif %}
+                        </p>
+                    </div>
+                    <p class="small text-muted mb-0">{{ object.vacancy.city }} / {{ object.vacancy.vacancy_type }}</p>
+                    <p class="text-muted mb-3">"{{ object.vacancy.employer.company_name }}"
+                    <span class="mb-3 ml-5">{% if object.vacancy.employer.site %}<a class="small" href="#">{{object.vacancy.employer.site }}</a>{% endif %}</span></p>
+                    <p class="font-weight-bold mb-0">Описание вакансии:</p>
+                    <p class="mt-0">{{ object.vacancy.description|linebreaks|truncatewords:30 }}</p>
+                    <p>Дата публикации: {{object.vacancy.published|date:"d.m.Y" }}</p>
+                    <p><a class="btn btn-outline-primary px-4" role="button" href="{% url 'jobseeker:offer_create' object.user.pk object.vacancy.id %}">Откликнуться</a></p>
+                    <p><a class="btn-resume-delete" href="{% url 'jobseeker:favorite_delete' object.user.pk object.id %}">Удалить из избранного</a></p>
+
+                </div>
+            {% endfor %}
+            {% else %}
+            <hr>
+             <p class="pt-0">Список избранного пуст</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+   <div class="container">
+       <h3 class="my-4 text-center"> Ваше резюме </h3>
+       <br>
+       <form action="" method="post">
+           {% csrf_token %}
+           {{ form.as_p }}
+           <button type="submit" value="сохранить" class="btn btn-default btn-round form-control last">сохранить</button>
+       </form>
+       <button class="btn btn-round form-control last">
+           {% if request.resolver_match.url_name == 'resume_update' %}
+            <a href="{% url 'jobseeker:resume_detail' user.pk resume.id %}">
+                К резюме
+            </a>
+           {% else %}
+            <a href="{% url 'jobseeker:cabinet' user.pk %}">
+                К личному кабинету
+            </a>
+           {% endif %}
+        </button>
+   </div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% load static %}
+
+<h4 class="pb-1" style="color: blue;">{{ item.vacancy_name }}</h4>
+{% if item.action == 'moderation_ok' and item.hide %}<span class="mr-5 text-muted">Статус: опубликована, удалена
+</span>{% elif item.action == 'draft' and item.hide %}<span class="mr-5 text-muted">Статус:
+    черновик, удален</span>{% endif %}
+<p class="small text-muted">{{ item.city }} / {{ item.vacancy_type }}</p>
+<div class="d-flex">
+    <p class="text-muted mr-5">{% if item.action == 'draft' or item.action == 'need_moderation' or item.hide %}
+        Дата создания: {{ item.published|date:"d.m.Y" }} {% elif item.action == 'moderation_ok' %}
+        Дата публикации: {{ item.published|date:"d.m.Y" }} {% endif %}</p>
+    <p class="h5">Уровень з/п: {% if item.min_salary and item.max_salary %}
+        {{ item.min_salary }} - {{ item.max_salary }} {{ item.currency }}
+        {% elif item.min_salary %} от {{ item.min_salary }} {{ item.currency }}
+        {% elif item.max_salary %} до {{ item.max_salary }} {{ item.currency }}
+        {% else %} не указана
+        {% endif %}
+    </p>
+</div>
+<p class="font-weight-bold mb-0">Описание вакансии:</p>
+<p class="pt-0">{{ item.description|linebreaks }}</p>
+<p class="font-weight-bold mb-0">Требования к кандидату:</p>
+<p class="pt-0">{{ item.requirements|linebreaks }}</p>
+{% if item.conditions %}
+<p class="font-weight-bold mb-0">Что мы предлагаем:</p>
+<p class="pt-0">{{ item.conditions|linebreaks }}</p>
+{% endif %}
+<p class="mt-3 font-weight-bold mb-0">Контакты:</p>
+<div class="d-flex">
+    <p class="mr-5">Контактное лицо: {{ item.contact_person }}</p>
+    <p>Контактный email: {% if item.contact_email %} {{ item.contact_email }}{% else %}
+    email не указан {% endif %}</p>
+</div>
