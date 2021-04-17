@@ -2,25 +2,77 @@
 {% load static %}
 
 {% block content %}
-   <div class="container">
-       <h3 class="my-4 text-center"> Ваше резюме </h3>
-       <br>
-       <form action="" method="post">
-           {% csrf_token %}
-           {{ form.as_p }}
-           <button type="submit" value="сохранить" class="btn btn-default btn-round form-control last">сохранить</button>
-       </form>
-       <button class="btn btn-round form-control last">
-           {% if request.resolver_match.url_name == 'resume_update' %}
-            <a href="{% url 'jobseeker:resume_detail' user.pk resume.id %}">
-                К резюме
-            </a>
-           {% else %}
-            <a href="{% url 'jobseeker:cabinet' user.pk %}">
-                К личному кабинету
-            </a>
-           {% endif %}
-        </button>
+   <div class="container my-5">
+       {% if sent and action == 'draft' %}
+       <div class="row justify-content-center">
+            <div class="col col-md-8">
+                <p class="mb-5">Ваше резюме сохранено. Вы можете продолжить редактировать резюме в
+                    разделе
+                    "Черновики резюме" вашего личного кабинета</p>
+                <div class="d-flex justify-content-around">
+                    <a class="btn btn-outline-primary" role="button"
+                       href="{% url 'jobseeker:cabinet' jobseeker.pk %}">вернуться в личный
+                        кабинет</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'main' 1 %}">на
+                        главную</a>
+                </div>
+            </div>
+        </div>
+       {% elif sent and action == 'need_moderation' %}
+       <div class="row justify-content-center">
+            <div class="col col-md-8">
+                <p class="mb-5">Ваше резюме было успешно отправлено на модерацию. После прохождения
+                    модерации резюме будет успешно добавлено на портал и будет отражено в
+                    вашем личном кабинете.
+                </p>
+                <p>Вам поступит сообщение о статусе модерации. Вы можете просмотреть данное сообщение в разделе "Сообщения" вашего личного кабинета.</p>
+                <div class="d-flex justify-content-around my-5">
+                    <a class="btn btn-outline-primary" role="button"
+                       href="{% url 'jobseeker:resume' jobseeker.pk %}">создать еще одно
+                        резюме</a>
+                    <a class="btn btn-outline-primary" role="button"
+                       href="{% url 'jobseeker:cabinet' jobseeker.pk %}">
+                        вернуться в личный кабинет</a>
+                </div>
+            </div>
+        </div>
+       {% else %}
+       <h3 class="my-4 text-center">Форма создания/редактирования резюме</h3>
+       <div class="row justify-content-center">
+          <div class="col-12 col-md-7">
+              <form action="" method="post">
+                  {% csrf_token %}
+                  <p class="font-weight-bold font-italic">Раздел основной информации:</p>
+                  <p>{{ form.name.label }}</p>
+                  <p>{{ form.name }}</p>
+                  <p>{{ form.salary_min.label }}</p>
+                  <p>{{ form.salary_min }}</p>
+                  <p>{{ form.salary_max.label }}</p>
+                  <p>{{ form.salary_max }}</p>
+                  <p>{{ form.currency.label }}</p>
+                  <p>{{ form.currency }}</p>
+                  <p>{{ form.key_skills.label }}</p>
+                  <p>{{ form.key_skills }}</p>
+                  <p>{{ form.about.label }}</p>
+                  <p>{{ form.about }}</p>
+                  <p class="font-weight-bold font-italic h5">Раздел "образование":</p>
+                  {{ education_form.as_p }}
+                  <p class="mt-4 font-weight-bold font-italic h5">Раздел "опыт работы":</p>
+                  <p class="small text-muted">В случае отсутствия опыта оставьте пустую форму</p>
+                  {{ experience_form.as_p }}
+                  <p class="mt-3">{{ form.status.label }}</p>
+                  <p>{{ form.status }}</p>
+                  <button type="submit" value="сохранить"
+                          class="btn btn-outline-primary form-control last">сохранить</button>
+              </form>
+              <button class="btn btn-round form-control last mb-5">
+                    <a href="{% url 'jobseeker:cabinet' jobseeker.pk %}">
+                        К личному кабинету
+                    </a>
+              </button>
+          </div>
+       </div>
+       {% endif %}
    </div>
 
 {% endblock %}

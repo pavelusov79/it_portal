@@ -136,7 +136,7 @@ LOGIN_URL = '/auth/login'
 LOGOUT_REDIRECT_URL = '/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DOMAIN_NAME = 'http://127.0.0.1:8000'
+DOMAIN_NAME = 'http://pavelusov79.pythonanywhere.com'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'it.portal.gb@gmail.com'

@@ -1,0 +1,64 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <h3 class="font-italic text-center mb-5">Результаты поиска</h3>
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10">
+            {% if  page_obj %}
+            <p><a class="h5" href="{% url 'main' 1 %}">&laquo вернуться к поиску</a></p>
+            {% for object in page_obj %}
+                {% if object.vacancy_name or object.description %}
+                <div class="mb-5">
+                    <div class="d-flex">
+                        <h4 style="color: blue;"><a href="{% url 'employer:vacancy_view' object.employer.pk object.pk %}">{{ object.vacancy_name }}</a></h4>
+                        <p class="h5 ml-5" style="color:black;">Уровень з/п:
+                            {% if object.min_salary and object.max_salary %}{{ object.min_salary }} -
+                                {{ object.max_salary }} {{ object.currency }}
+                            {% elif object.min_salary %} 
+                                от {{ object.min_salary }} {{ object.currency }}
+                            {% elif object.max_salary %} 
+                                до {{ object.max_salary }} {{ object.currency }}
+                            {% else %} 
+                                не указана
+                            {% endif %}
+                        </p>
+                    </div>
+                    <p class="small text-muted mb-0">{{ object.city }} / {{ object.vacancy_type }}</p>
+                    <p class="text-muted mb-3">"{{object.employer.company_name}}"
+                    <span class="mb-3 ml-5">{% if object.employer.site %}<a class="small" href="#">{{object.employer.site }}</a>{% endif %}</span></p>
+                    <p class="font-weight-bold mb-0">Описание вакансии:</p>
+                    <p class="mt-0">{{ object.description|linebreaks|truncatewords:30 }}</p>
+                    <div class="d-flex">
+                        <p>Дата публикации: {{object.published|date:"d.m.Y" }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+            <div class="text-center mt-4 mb-5">
+            {% if page_obj.has_previous %}
+                <span>
+                    <a class="h4"
+                       href="?search={{ request.GET.search }}&company_name={{ request.GET.company_name }}&city={{ request.GET.city }}&min_salary={{ request.GET.min_salary }}&max_salary={{ request.GET.max_salary }}&currency={{ request.GET.currency }}&vacancy_type={{ request.GET.vacancy_type }}&from_date={{ request.GET.from_date }}&till_date={{ request.GET.till_date }}&page={{ page_obj.previous_page_number }}">&laquo
+                    </a>
+                </span>
+            {% endif %}
+                <span class="px-3 font-italic font-weight-bold">страница {{ page_obj.number }}
+                    из {{ page_obj.paginator.num_pages }}</span>
+            {% if page_obj.has_next %}
+                <span>
+                    <a class="h4"
+                       href="?search={{ request.GET.search }}&company_name={{ request.GET.company_name }}&city={{ request.GET.city }}&min_salary={{ request.GET.min_salary }}&max_salary={{ request.GET.max_salary }}&currency={{ request.GET.currency }}&vacancy_type={{ request.GET.vacancy_type }}&from_date={{ request.GET.from_date }}&till_date={{ request.GET.till_date }}&page={{ page_obj.next_page_number }}">&raquo
+                    </a>
+                </span>
+            {%endif%}
+            </div>
+            {% else %}
+            <p>Поиск не дал результатов. Попробуйте изменить поиск.</p>
+            <a href="{% url 'main' 1 %}">вернуться к поиску</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

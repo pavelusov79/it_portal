@@ -18,7 +18,6 @@ def load_dbjson(file_name):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        print('Here goes db filling...')
 
         IndustryType.objects.all().delete()
 
@@ -59,5 +58,3 @@ class Command(BaseCommand):
                     if 'experience' in resume_:
                         for experience in resume_['experience']:
                             ResumeExperience.objects.create(resume_id=object.id, **experience)
-
-        print('DB filled successfully')

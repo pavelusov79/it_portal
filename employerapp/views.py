@@ -3,8 +3,7 @@ from itertools import chain
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Q
-from django.http import HttpResponseRedirect, JsonResponse
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
@@ -16,6 +15,12 @@ from jobseekerapp.models import Resume, Offer, Favorite as FavoriteVacancy
 
 @login_required
 def employer_cabinet(request, emp_id):
+    """
+    Собираются данные о работадатели из базы данных, для их отображения в личном кабинете.
+
+    *Template*
+    :template:`employerapp/employer_cabinet.html`
+    """
     title = 'Личный кабинет работодателя'
     employer = get_object_or_404(Employer, pk=emp_id)
     industry_type = IndustryType.objects.get(id=employer.industry_type_id)
@@ -45,6 +50,12 @@ def employer_cabinet(request, emp_id):
 
 @login_required
 def vacancy_published(request, emp_id):
+    """
+    Собирает из базы данных вакансии в статусе не скрытые (поле hide=False) и выводит их на странице.
+
+    *Template*
+    :template:`employerapp/vacancy_published.html`
+    """
     title = 'Опубликованные вакансии'
     employer = get_object_or_404(Employer, pk=emp_id)
     drafts = Vacancy.objects.filter(action=employer.DRAFT, hide=False, employer=employer).order_by(
@@ -75,6 +86,12 @@ def vacancy_published(request, emp_id):
 
 @login_required
 def vacancy_draft(request, emp_id):
+    """
+    Собирает из базы данных вакансии в статусе draft и выводит их на странице.
+
+    *Template*
+    :template:`employerapp/vacancy_drafts.html`
+    """
     employer = get_object_or_404(Employer, pk=emp_id)
     title = 'Черновики'
     drafts = Vacancy.objects.filter(action=employer.DRAFT, hide=False, employer=employer).order_by(
@@ -104,6 +121,12 @@ def vacancy_draft(request, emp_id):
 
 @login_required
 def vacancy_hide(request, emp_id):
+    """
+    Собирает из базы данных вакансии в статусе скрытые (поле hide=True) и выводит их на странице.
+
+    *Template*
+    :template:`employerapp/vacancy_hide.html`
+    """
     employer = get_object_or_404(Employer, pk=emp_id)
     title = 'Удаленные вакансии'
     vacancies_hide = Vacancy.objects.filter(hide=True, employer=employer).order_by(
@@ -133,6 +156,12 @@ def vacancy_hide(request, emp_id):
 
 @login_required
 def messages(request, emp_id):
+    """
+    Собирает из базы данных сообщения от администратора портала, по результатм модерации вакансий.
+
+    *Template*
+    :template:`employerapp/employer_messages.html`
+    """
     title = 'Сообщения от админа портала'
     employer = get_object_or_404(Employer, pk=emp_id)
     vacancies_all = Vacancy.objects.filter(employer=employer).exclude(action=employer.NEED_MODER).exclude(action=employer.DRAFT).order_by('published')
@@ -193,6 +222,12 @@ def my_offers(request, emp_id):
 
 @login_required
 def vacancy_create(request, emp_id):
+    """
+    Создании вакансий.
+
+    *Template*
+    :template:`employerapp/vacancy_creation.html`
+    """
     employer = get_object_or_404(Employer, pk=emp_id)
     title = 'создание вакансии'
     sent = False
@@ -226,6 +261,12 @@ def vacancy_create(request, emp_id):
 
 @login_required
 def vacancy_edit_draft(request, emp_id, pk):
+    """
+    Редактирование черновика вакансии.
+
+    *Template*
+    :template:`employerapp/vacancy_edit.html`
+    """
     title = 'Редактирование вакансии'
     vacancy = get_object_or_404(Vacancy, pk=pk)
     employer = get_object_or_404(Employer, pk=emp_id)
@@ -248,6 +289,12 @@ def vacancy_edit_draft(request, emp_id, pk):
 
 @login_required
 def vacancy_edit(request, emp_id, pk):
+    """
+    Редактирование вакансии
+
+    *Template*
+    :template:`employerapp/vacancy_edit.html`
+    """
     title = 'Редактирование вакансии'
     vacancy = get_object_or_404(Vacancy, pk=pk)
     employer = get_object_or_404(Employer, pk=emp_id)
@@ -270,6 +317,12 @@ def vacancy_edit(request, emp_id, pk):
 
 @login_required
 def vacancy_delete(request, emp_id, pk):
+    """
+    Удаление вакансии
+
+    *Template*
+    :template:`employerapp/vacancy_delete.html`
+    """
     title = 'Удаление вакансии'
     employer = get_object_or_404(Employer, pk=emp_id)
     vacancy = get_object_or_404(Vacancy, pk=pk)
@@ -288,6 +341,12 @@ def vacancy_delete(request, emp_id, pk):
 
 @login_required
 def vacancy_view(request, emp_id, pk):
+    """
+    Просмотр вакансии
+
+    *Template*
+    :template:`employerapp/vacancy_view.html`
+    """
     title = 'Вакансия'
     employer = get_object_or_404(Employer, pk=emp_id)
     vacancy = get_object_or_404(Vacancy, pk=pk)
@@ -305,6 +364,12 @@ def vacancy_view(request, emp_id, pk):
 
 @login_required
 def send_offer(request, emp_id, pk):
+    """
+    Выслать предложение на работу.
+
+    *Template*
+    :template:`employerapp/send_offer.html`
+    """
     title = 'Предложение по работе'
     employer = get_object_or_404(Employer, pk=emp_id)
     resume = get_object_or_404(Resume, pk=pk)
@@ -334,6 +399,12 @@ def send_offer(request, emp_id, pk):
 
 @login_required
 def favorites(request, emp_id):
+    """
+    Просмотр избранных резюме
+
+    *Template*
+    :template:`employerapp/favorites.html`
+    """
     title = 'Избранные резюме'
     employer = get_object_or_404(Employer, pk=emp_id)
     favorites = Favorites.objects.filter(employer=employer).order_by('date')
@@ -364,6 +435,9 @@ def favorites(request, emp_id):
 
 @login_required
 def add_favorite(request, emp_id):
+    """
+    Добавление резюме в избранное
+    """
     if request.is_ajax():
         resume = get_object_or_404(Resume, pk=int(request.POST.get('checked')))
         employer = get_object_or_404(Employer, pk=emp_id)
@@ -374,6 +448,12 @@ def add_favorite(request, emp_id):
 
 @login_required
 def delete_favorite(request, emp_id, pk):
+    """
+    Удаление избранных резюме
+
+    *Template*
+    :template:`employerapp/delete_favorite.html`
+    """
     title = 'Удаление избранных резюме'
     employer = get_object_or_404(Employer, pk=emp_id)
     favorite = get_object_or_404(Favorites, pk=pk)
@@ -392,6 +472,12 @@ def delete_favorite(request, emp_id, pk):
 
 @login_required
 def search_resume(request, emp_id):
+    """
+    Поиск резюме
+
+    *Template*
+    :template:`employerapp/search_resume.html`
+    """
     title = 'Поиск резюме'
     employer = get_object_or_404(Employer, pk=emp_id)
     search = request.GET.get('search')
@@ -467,6 +553,12 @@ def search_resume(request, emp_id):
 
 @login_required
 def responses(request, emp_id):
+    """
+    Просомотр откликов на вакансии
+
+    *Template*
+    :template:`employerapp/employer_responses.html`
+    """
     title = 'Отклики по вакансиям'
     employer = get_object_or_404(Employer, pk=emp_id)
     responses = Offer.objects.filter(vacancy__employer=employer.pk, direction='O').order_by(

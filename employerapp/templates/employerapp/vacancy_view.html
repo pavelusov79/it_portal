@@ -54,12 +54,12 @@
             </div>
             <p class="mb-5">Дата публикации: {{ item.published|date:"d.m.Y" }}</p>
             <div class="d-flex">
-                <a class="btn btn-outline-primary mb-5 px-4" role="button"
-                   href="{% url 'main' 1 %}">На главную</a>
-                <a class="btn btn-outline-primary mb-5 px-4 ml-5" role="button" href="{% url 'jobseeker:offer_create' user item.id %}">Откликнуться
+                <a class="btn btn-outline-primary mb-5 px-4" role="button" href="javascript:history.go(-1)">Назад
                 </a>
+                {% if request.user.jobseeker %}
+                <a class="btn btn-outline-primary mb-5 px-4 ml-5" role="button" href="{% url 'jobseeker:offer_create' user item.id %}">Откликнуться</a>
+                {% endif %}
             </div>
-
         </div>
     </div>
 </div>

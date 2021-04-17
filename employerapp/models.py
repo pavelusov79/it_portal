@@ -6,11 +6,11 @@ from authapp.models import Employer
 
 
 class Vacancy(models.Model):
-    RUB = 'руб.'
+    RUB = 'RUB'
     USD = 'USD'
     EUR = 'EUR'
     CURRENCY_CHOICE = (
-        (RUB, 'руб.'),
+        (RUB, 'RUB'),
         (USD, 'USD'),
         (EUR, 'EUR')
     )

@@ -29,14 +29,12 @@ def main(request, page=None):
             is_favorite = jobseek_model.Favorite.objects.filter(user=request.user.id,
                                                                 vacancy=vacancy.id).first()
             setattr(vacancy, "is_favorite", True if is_favorite else False)
-            print(vacancy.is_favorite)
     resume_all = jobseek_model.Resume.objects.all().filter(status='opened').order_by('updated_at')
     if resume_all and request.user.is_authenticated and getattr(request.user, 'employer', None):
         for resume in resume_all:
             is_favorite = Favorites.objects.filter(employer=request.user.employer,
                                                    resume=resume.id).first()
             setattr(resume, "is_favorite", True if is_favorite else False)
-            print(resume.is_favorite)
     paginator = Paginator(news, 4)
     try:
         news_paginator = paginator.page(page)
@@ -58,7 +56,7 @@ def main(request, page=None):
 def news_detail(request, pk):
     one_news = News.objects.get(pk=pk)
     title = one_news.pk
-    url = f'http://127.0.0.1:8000{request.path}'
+    url = f'http://pavelusov79.pythonanywhere.com{request.path}'
     context = {
         'title': title,
         'one_news': one_news,

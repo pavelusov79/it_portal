@@ -57,15 +57,13 @@ class Employer(models.Model):
 
 
 class Jobseeker(models.Model):
-    DRAFT = 'draft'
     NEED_MODER = 'need_moderation'
     MODER_OK = 'moderation_ok'
     MODER_REJECT = 'moderation_reject'
     JOBSEEKER_STATUS_CHOICES = (
         (NEED_MODER, 'требуется модерация'),
         (MODER_OK, 'модерация пройдена успешно'),
-        (MODER_REJECT, 'отклонено модератором'),
-        (DRAFT, 'черновик')
+        (MODER_REJECT, 'отклонено модератором')
     )
     GENDER_CHOICES = (
         ('m', 'мужской'),
@@ -85,7 +83,7 @@ class Jobseeker(models.Model):
     photo = models.ImageField(upload_to='jobseeker_photo', blank=True)
     phone_number = models.CharField(verbose_name='телефон', max_length=11)
     about = models.TextField(verbose_name='о себе', max_length=512, blank=True)
-    status = models.CharField(verbose_name='статус компании на сайте',
+    status = models.CharField(verbose_name='статус соискателя на сайте',
                 choices=JOBSEEKER_STATUS_CHOICES, default=NEED_MODER, max_length=32)
     failed_moderation = models.CharField(max_length=512, blank=True, verbose_name='поле '
                                             'заполняется в случае отклонения модерации')

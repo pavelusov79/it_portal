@@ -13,7 +13,7 @@
                 <p class="text-muted mb-3">{{ object.get_direction_display }} </p>
                 <p class="h6 mb-1"><b><a href="{% url 'employer:vacancy_view' object.vacancy.employer.pk object.vacancy.pk %}">{{ object.vacancy.employer.company_name }} ({{ object.vacancy.vacancy_name }})</a></b></p>
                 <p class="h6 mb-1">{{ object.date|date:'d.m.Y' }} </p>
-                <p class="h6 mb-1">резюме: <a href="{% url 'jobseeker:resume_detail' object.resume.user.id object.id %}"> {{ object.resume.name }} </a></p>
+                <p class="h6 mb-1">резюме: <a href="{% url 'jobseeker:resume_detail' jobseeker.pk object.id %}"> {{ object.resume.name }} </a></p>
                 <p class="text-muted mb-0">{{ object.vacancy.get_status_display }} </p>
                 {% if object.cover_letter %}<p class="mb-0">{{ object.cover_letter|linebreaks|truncatewords:40 }} Контактное лицо: {{ object.vacancy.contact_person }}</p>
                 {% else %}
@@ -28,7 +28,7 @@
                 <p class="text-muted mb-3">{{ object.get_direction_display }} </p>
                 <p class="h6 mb-1"><b><a href="{% url 'employer:vacancy_view' object.vacancy.employer.pk object.vacancy.pk %}">{{ object.vacancy.employer.company_name }} ({{ object.vacancy.vacancy_name }})</a></b></p>
                 <p class="h6 mb-1">{{ object.date|date:'d.m.Y' }} </p>
-                <p class="h6 mb-1">резюме: <a href="{% url 'jobseeker:resume_detail' object.resume.user.id object.id %}"> {{ object.resume.name }} </a></p>
+                <p class="h6 mb-1">резюме: <a href="{% url 'jobseeker:resume_detail' jobseeker.pk object.id %}"> {{ object.resume.name }} </a></p>
                 <p class="text-muted mb-3">{{ object.get_status_display }} </p>
                 {% if object.contact_phone %}
                 <p class="mb-0">Контактный телефон:

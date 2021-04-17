@@ -22,50 +22,34 @@
 
 			  <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
 			  	{% if user.is_authenticated and user.employer %}
-				  {% if user.employer.status == 'moderation_reject' or user.employer.status == 'need_moderation'%}
 				  <li class="nav-item">
-					<a class="nav-link {% if request.resolver_match.url_name == 'edit' %}active{% endif %}" href="{% url 'auth:edit' %}">редактирование
-						профиля</a>
-				  </li>
-				  {% endif %}
-				  <li class="nav-item">
-					<a class="nav-link {% if request.resolver_match.url_name == 'main_cabinet' %}active{% endif %}" href="{% url 'employer:main_cabinet' user.employer.pk %}">личный
-						кабинет</a>
+					<a class="nav-link {% if request.resolver_match.url_name == 'news' %}active{% endif %}" href="{% url 'news' 1 %}">Новости</a>
 				  </li>
 				  <li class="nav-item">
-					<a class="nav-link" href="{% url 'auth:logout' %}">выход</a>
+				  	{% if user.employer.status == 'moderation_reject' or user.employer.status == 'need_moderation'%}
+						<a class="nav-link {% if request.resolver_match.url_name == 'edit' %}active{% endif %}" href="{% url 'auth:edit' %}">Редактирование профиля</a>
+					{% else %}
+						<a class="nav-link {% if request.resolver_match.url_name == 'main_cabinet' %}active{% endif %}" href="{% url 'employer:main_cabinet' user.employer.pk %}">Личный кабинет</a>
+					{% endif %}
 				  </li>
 				  <li class="nav-item">
-					<a class="nav-link {% if request.resolver_match.url_name == 'news' %}active{% endif %}" href="{% url 'news' 1 %}">новости</a>
+					<a class="nav-link" href="{% url 'auth:logout' %}">Выход</a>
 				  </li>
 			  	{% elif user.is_authenticated and user.jobseeker %}
-				  <!--<li class="nav-item">
-					<a class="nav-link {% if request.resolver_match.url_name == 'offer_list' %}active{% endif %}" href="{% url 'jobseeker:offer_list' user.pk %}">Мои
-						отклики</a>
+				  <li class="nav-item">
+					<a class="nav-link {% if request.resolver_match.url_name == 'news' %}active{% endif %}" href="{% url 'news' 1 %}">Новости</a>
 				  </li>
 				  <li class="nav-item">
-					<a class="nav-link {% if request.resolver_match.url_name == 'resume' %}active{% endif %}" href="{% url 'jobseeker:resume' user.pk %}">Создать
-						резюме</a>
-				  </li>-->
-				  {% if user.jobseeker.status == 'moderation_reject'  or user.jobseeker.status == 'need_moderation'  %}
-				  <li class="nav-item">
-					<a class="nav-link {% if request.resolver_match.url_name == 'edit_jobseeker' %}active{% endif %}" href="{% url 'auth:edit_jobseeker' user.pk %}">редактировать
-						профиль</a>
-				  </li>
-				  {% endif %}
-				  <li class="nav-item">
-					<a class="nav-link {% if request.resolver_match.url_name == 'cabinet' %}active{% endif %}" href="{% url 'jobseeker:cabinet' user.pk %}">личный
-						кабинет</a>
+				   {% if user.jobseeker.status == 'moderation_reject'  or user.jobseeker.status == 'need_moderation' %}
+					  	<a class="nav-link {% if request.resolver_match.url_name == 'edit_jobseeker' %}active{% endif %}" href="{% url 'auth:edit_jobseeker' user.pk %}">Редактировать профиль</a>
+				  	{% else %}
+						<a class="nav-link {% if request.resolver_match.url_name == 'cabinet' %}active{% endif %}" href="{% url 'jobseeker:cabinet' user.pk %}">Личный кабинет</a>
+				  	{% endif %}
 				  </li>
 				  <li class="nav-item">
-					<a class="nav-link" href="{% url 'auth:logout' %}">выход</a>
+					<a class="nav-link" href="{% url 'auth:logout' %}">Выход</a>
 				  </li>
-				  <!--<li class="nav-item">
-					<a class="nav-link {% if request.resolver_match.url_name == 'edit_password' %}active{% endif %}" href="{% url 'auth:edit_password' %}">смена пароля</a>
-				  </li>-->
-				   <li class="nav-item">
-					<a class="nav-link {% if request.resolver_match.url_name == 'news' %}active{% endif %}" href="{% url 'news' 1 %}">новости</a>
-				  </li>
+			  	{% else %}
 
 			  	{% endif %}
 			  </ul>

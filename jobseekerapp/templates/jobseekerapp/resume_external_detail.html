@@ -6,44 +6,42 @@
     <div class="row">
         <div class="col">
             <div class="d-flex">
-                {% if object.user.jobseeker.photo %}
+                {% if object.user.photo %}
                 <div class="w-25 h-50">
-                <img class="rounded w-75 h-75 shadow" src="/media/{{ object.user.jobseeker.photo }}" alt="Jobseeker image">
+                <img class="rounded w-75 h-75 shadow" src="/media/{{ object.user.photo }}" alt="Jobseeker image">
                 </div>
                 {% endif %}
                 <div class="d-block ml-1">
                 <div class="d-flex">
-                <h4 style="color: #007bff;">{{ resume.user.last_name }} {{ resume.user.first_name }} {{ resume.user.jobseeker.middle_name }}</h4>
-                <p class="ml-5">
-                    {% if not object.is_favorite %}
-                    <form action="{% url 'employer:create_favorite' user.employer.pk %}"
-                              method="post" class="ml-2 add-favorite">{% csrf_token %}
-                            <input type="hidden" name="checked" value="{{ resume.pk }}">
-                            <button class="btn btn-clear add-favorite" type="submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                 fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" style="fill:blue;">
-                            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
-                            </svg></button>
-                        </form>
-                    {% else %}
-                    <form action="{% url 'employer:delete_favorite' user.employer.pk object.favorite  %}"
-                              method="post" class="ml-2 delete-favorite">{% csrf_token %}
-                            <input type="hidden" name="checked" value="{{ resume.pk }}">
-                            <button class="btn btn-clear delete-favorite" type="submit">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                 fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" style="fill:blue;">
-                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                            </svg></button>
-                    </form>
-                    {% endif %}
-                </p>
+                <h4 style="color: #007bff;">{{ resume.user.user.last_name }} {{ resume.user.user.first_name }} {{ resume.user.middle_name }}</h4>
+                {% if not object.is_favorite %}
+                <form action="{% url 'employer:create_favorite' user.employer.pk %}"
+                          method="post" class="ml-2 add-favorite">{% csrf_token %}
+                    <input type="hidden" name="checked" value="{{ resume.pk }}">
+                    <button class="btn btn-clear add-favorite" type="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                         fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" style="fill:blue;">
+                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg></button>
+                </form>
+                {% else %}
+                <form action="{% url 'employer:delete_favorite' user.employer.pk object.favorite  %}"
+                          method="post" class="ml-2 delete-favorite">{% csrf_token %}
+                        <input type="hidden" name="checked" value="{{ resume.pk }}">
+                        <button class="btn btn-clear delete-favorite" type="submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                             fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" style="fill:blue;">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                        </svg></button>
+                </form>
+                {% endif %}
                 </div>
                 <p class="text-muted mb-3">
-                Пол {{ resume.user.jobseeker.get_gender_display|title }}, д.р. {{ resume.user.jobseeker.birthday|date:"d.m.Y" }}
+                Пол {{ resume.user.get_gender_display|title }}, д.р. {{ resume.user.birthday|date:"d.m.Y" }}
                 </p>
-                <p class="mr-5">тел.: {{ object.user.jobseeker.phone_number|phone_number }}</p>
-                {% if object.user.email %}<p class="mr-5">email: {{ object.user.email }}</p>{% endif %}
-                {% if object.user.jobseeker.city %}<p class="mr-5">{{ object.user.jobseeker.city }}</p>{% endif %}
+                <p class="mr-5">тел.: {{ object.user.phone_number|phone_number }}</p>
+                {% if object.user.user.email %}<p class="mr-5">email: {{ object.user.user.email }}</p>{% endif %}
+                {% if object.user.city %}<p class="mr-5">{{ object.user.city }}</p>{% endif %}
                 </div>
             </div>
             <p class="h5 font-weight-bold mt-5 pt-2">Желаемая должность и зарплата</p>
@@ -92,8 +90,8 @@
             {% endif %}
             <p class="mb-5">Дата последнего обновления: {{ object.updated_at|date:"d.m.Y" }}</p>
             <div class="d-flex">
-                <a class="btn btn-outline-primary mb-5 px-4" role="button" href="{% url 'main' 1 %}">К списку резюме
-                </a>
+                <a class="btn btn-outline-primary mb-5 px-4" role="button" href="javascript:history.go(-1)">Назад</a>
+                <a class="btn btn-outline-primary mb-5 px-4 ml-5" role="button" href="{% url 'main' 1 %}">К списку резюме</a>
                 <a class="btn btn-outline-primary mb-5 px-4 ml-5" role="button" href="{% url 'employer:send_offer' user.employer.pk resume.pk %}">Направить
                     предложение
                 </a>

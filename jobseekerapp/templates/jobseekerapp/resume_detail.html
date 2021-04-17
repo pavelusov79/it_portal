@@ -4,15 +4,15 @@
 {% block content %}
    <div class="container">
        <h4 class="mt-5">Основная информация </h4>
-        <table class="table resume_table">
+        <table class="table">
                 <tbody>
                 <tr>
-                    <td scope="col">Желаемая должность</td>
-                    <td scope="col">{{ object.name }}</td>
+                    <td scope="col-6">Желаемая должность</td>
+                    <td scope="col-6">{{ object.name }}</td>
                 </tr>
                 <tr>
-                    <td scope="col">Желаемая зарплата</td>
-                    <td scope="col">
+                    <td scope="col-6">Желаемая зарплата</td>
+                    <td scope="col-6">
                         {% if object.salary_min and object.salary_max %}
                             {{ object.salary_min }} - {{ object.salary_max }} {{ object.currency }}
                        {% elif object.salary_min %}
@@ -25,8 +25,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col">Ключевые навыки</td>
-                    <td scope="col">
+                    <td scope="col-6">Ключевые навыки</td>
+                    <td scope="col-6">
                         {% if object.key_skills %}
                             {{ object.key_skills }}
                         {% else %}
@@ -35,35 +35,37 @@
                     </td>
                 </tr>
                 <tr>
-                    <td scope="col">О себе</td>
-                    <td scope="col">
+                    <td scope="col-6">О себе</td>
+                    <td scope="col-6">
                         {% if object.about %}
                             {{ object.about }}
                         {% else %}
                             Информация о себе не указана
                         {% endif %}
                     </td>
+
+                </tr>
+                <tr>
+                    <td scope="col-6">Статус резюме</td>
+                    <td scope="col-6">{{ object.get_status_display }}</td>
                 </tr>
                 </tbody>
             </table>
-       <button class="btn btn-round form-control last text-left btn-resume-detail">
-            <a href="{% url 'jobseeker:resume_update' user.pk object.id %}">
-                Редактировать Основную информацию
-            </a>
-       </button>
        <h4 class="mt-5">Опыт работы</h4>
-       <table class="table resume_table">
+       <table class="table">
              <tbody>
        {% if object.get_experience_items %}
            {% for item in object.get_experience_items %}
                 <tr>
-                    <td scope="col">
-                        <p>{{ item.company_name }}</p>
-                        <p>{{ item.job_title }} </p>
-                        <p>{{ item.from_date|date:'M Y' }} - {{ item.to_date|date:'M Y' }}</p>
+                    <td scope="col-8">
+                        <p class="mb-0">Название компании: {{ item.company_name }}</p>
+                        <p class="mb-0">Занимаемая должность: {{ item.job_title }} </p>
+                        <p class="mb-0">Период работы: {{ item.from_date|date:'d.m.Y' }} - {{ item.to_date|date:'d.m.Y' }}</p>
+                        {% if item.description %}<p>Описание обязанностей: {{ item.description }}</p>{% endif %}
                     </td>
-                    <td scope="col" class="text-right">
-                        <p><a href="{% url 'jobseeker:resume_experience_update' user.pk object.id item.id %}">редактировать запись</a></p>
+                    <td scope="col-4" class="text-right">
+                        <!--<p><a href="{% url 'jobseeker:resume_experience_update' user.pk
+                        object.id item.id %}">редактировать запись</a></p>-->
                         <p><a class="btn-resume-delete" href="{% url 'jobseeker:resume_experience_delete' user.pk object.id item.id %}">удалить запись</a></p>
                     </td>
                 </tr>
@@ -75,25 +77,28 @@
        {% endif %}
              </tbody>
        </table>
-       <button class="btn btn-round form-control last text-left btn-resume-detail">
+       <!--<button class="btn btn-round form-control last text-left btn-resume-detail">
             <a href="{% url 'jobseeker:resume_experience' user.pk object.id %}">
                 Добавить информацию о прежнем месте работы
             </a>
-       </button>
+       </button>-->
        <h4 class="mt-5">Образование</h4>
-       <table class="table resume_table">
+       <table class="table">
            <tbody>
        {% if object.get_education_items %}
            {% for item in object.get_education_items %}
                 <tr>
-                    <td scope="col">
-                        <p>{{ item.get_edu_type_display }} ({{ item.get_degree_display }})</p>
-                        <p>{{ item.institution_name }}</p>
-                        <p>{{ item.course_name }}</p>
-                        <p>{{ item.from_date|date:'M Y' }} - {{ item.to_date|date:'M Y' }}</p>
+                    <td scope="col-8">
+                        <p class="mb-0">Тип образования: {{ item.get_edu_type_display }} ({{ item.get_degree_display }})</p>
+                        <p class="mb-0">Название учебного заведения: {{ item.institution_name }}</p>
+                        <p class="mb-0">Название курса: {{ item.course_name }}</p>
+                        <p class="mb-0">Период обучения: {{ item.from_date|date:'d.m.Y' }} - {{ item.to_date|date:'d.m.Y' }}</p>
+                        {% if item.description %}<p>Описание: {{ item.description }}</p>{% endif %}
                     </td>
-                    <td scope="col" class="text-right">
-                        <p><a href="{% url 'jobseeker:resume_education_update' user.pk object.id item.id %}">редактировать запись</a></p>
+                    <td scope="col-4" class="text-right">
+                        <!--<p><a
+                            href="{% url 'jobseeker:resume_education_update' user.pk object.id
+                            item.id %}">редактировать запись</a></p>-->
                         <p><a class="btn-resume-delete" href="{% url 'jobseeker:resume_education_delete' user.pk object.id item.id %}">удалить запись</a></p>
                     </td>
                 </tr>
@@ -106,17 +111,22 @@
        {% endif %}
                 </tbody>
             </table>
-       <button class="btn btn-round form-control last text-left btn-resume-detail">
+       <!--<button class="btn btn-round form-control last text-left btn-resume-detail">
             <a href="{% url 'jobseeker:resume_education' user.pk object.id %}">
                 Добавить информацию об образовании
             </a>
-       </button>
+       </button>-->
+       <div class="d-flex justify-content-center">
+          <a class="my-3 btn btn-outline-primary px-4" role="button"
+          href="{% url 'jobseeker:resume_update' object.user.pk object.id %}">Редактировать резюме</a>
+       </div>
+
        <button class="btn btn-round form-control last">
             <a class="btn-resume-delete" href="{% url 'jobseeker:resume_delete' user.pk object.id %}">
                 Удалить резюме
             </a>
        </button>
-       <button class="btn btn-round form-control last">
+       <button class="btn btn-round form-control last mb-5">
             <a href="{% url 'jobseeker:cabinet' user.pk %}">
                 к личному кабинету
             </a>

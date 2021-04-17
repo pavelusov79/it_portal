@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <th scope="col">День рождения</th>
-                    <th scope="col">{{ jobseeker.birthday }}</th>
+                    <th scope="col">{{ jobseeker.birthday|date:"d.m.Y" }}</th>
                 </tr>
                 <tr>
                     <th scope="col">Город</th>
@@ -84,14 +84,44 @@
                 <a class="btn btn-primary mb-3" href="{% url 'jobseeker:resume' jobseeker.pk %}">
                     Создать резюме
                 </a>
-            <h1 class="my-5">Поиск вакансий</h1>
-                <p>Здесь будет форма поиска вакасий или переход в раздел поиска </p>
-            <h1 class="my-5">Избранные вакасии</h1>
+            <h1 class="my-5">Черновики резюме</h1>
+            <table class="table employer_table">
+                <tbody>
+            {% if not drafts %}
+                <tr>
+                    <td scope="col"><p>У вас нет ни одного сохраненого черновика</p></td>
+                </tr>
+            {% else %}
+                {% for object in drafts %}
+                    <tr>
+                        <td scope="col">
+                            <p>{{ object.name }}</p>
+                            {% if object.salary_min and object.salary_max %}
+                            <p>{{ object.salary_min }} - {{ object.salary_max }} {{ object.currency }}</p>
+                            {% elif object.salary_min %}
+                            <p>{{ object.salary_min }} {{ object.currency }}</p>
+                            {% elif object.salary_max %}
+                            <p>{{ object.salary_max }} {{ object.currency }}</p>
+                            {% endif %}
+                        </td>
+                        <td scope="col" class="text-right">
+                            <p><a href="{% url 'jobseeker:resume_detail' jobseeker.pk object.id %}">просмотреть резюме</a></p>
+                            <p><a class="btn-resume-delete" href="{% url 'jobseeker:resume_delete' jobseeker.pk object.id %}">удалить резюме</a></p>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+                </tbody>
+            </table>
+            <h1 class="my-5">Избранные вакасии ({{ favorites|length }})</h1>
                 <a class="btn btn-outline-primary" role="button"
-                   href="{% url 'jobseeker:favorite_list' jobseeker.pk %}">перейти в раздел</a>
-            <h1 class="my-5">Отклики</h1>
+                   href="{% url 'jobseeker:favorite_list' object.pk %}">перейти в раздел</a>
+            <h1 class="my-5">Отклики ({{ offers|length }})</h1>
                 <a class="btn btn-outline-primary" role="button"
-                   href="{% url 'jobseeker:offer_list' jobseeker.pk %}">перейти в раздел</a>
+                   href="{% url 'jobseeker:offer_list' object.pk %}">перейти в раздел</a>
+            <h1 class="my-5">Сообщения от модератора портала ({{ messages|length }})</h1>
+            <a class="btn btn-outline-primary" role="button"
+                   href="{% url 'jobseeker:messages' object.pk %}">перейти в раздел</a>
         </div>
         {% else %}
         <div class="col-12">
